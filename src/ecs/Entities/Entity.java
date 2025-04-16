@@ -31,6 +31,11 @@ public final class Entity {
         this.components.put(component.getClass(), component);
     }
 
+    // Get a copy of the components
+    public Map<Class<? extends Component>, Component> getComponents() {
+        return Collections.unmodifiableMap(this.components);
+    }
+
     public <TComponent extends Component> void remove(Class<TComponent> type) {
         this.components.remove(type);
     }
