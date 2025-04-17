@@ -1,13 +1,26 @@
 package ecs.Components;
 
-public class Position extends Component {
-    float x;
-    float y;
-    float z;
+import org.joml.Vector3i;
 
-    public Position(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Position extends Component {
+    public List<Vector3i> segments = new ArrayList<>();
+
+    public Position(int x, int y, int z) {
+        segments.add(new Vector3i(x, y, z));
+    }
+
+    public int getX() {
+        return segments.getFirst().x;
+    }
+
+    public int getY() {
+        return segments.getFirst().y;
+    }
+
+    public int getZ() {
+        return segments.getFirst().z;
     }
 }
