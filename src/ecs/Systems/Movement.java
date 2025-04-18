@@ -1,7 +1,9 @@
 package ecs.Systems;
 
-import ecs.Components.nouns.IsYou;
+import ecs.Components.Noun;
 import ecs.Entities.Entity;
+import ecs.Systems.collisionsystems.PushableCollision;
+import ecs.Systems.collisionsystems.StoppedCollision;
 
 public class Movement extends System{
 
@@ -9,42 +11,54 @@ public class Movement extends System{
 
     Direction direction = Direction.UP;
 
-    Collision collision;
+    PushableCollision pushableCollision;
+    StoppedCollision stoppedCollision;
 
-    public Movement(Collision collision) {
-        super(ecs.Components.Movable.class);
-        this.collision = collision;
+    public Movement(PushableCollision collision, StoppedCollision stoppedCollision) {
+        super(ecs.Components.objectattributes.You.class);
+        this.pushableCollision = collision;
+        this.stoppedCollision = stoppedCollision;
     }
     @Override
     public void update(double elapsedTime) {
         for (var entity : entities.values()) {
-           updateLocation(entity, 1, false);
+            if(canMove(entity))
+                updateLocation(entity, false);
         }
-
-
     }
 
-    private void updateLocation(Entity entity, int factor, boolean ignoreClass) {
+    private void updateLocation(Entity entity, Boolean simulation) {
        var pos = entity.get(ecs.Components.Position.class);
 
-       if (direction == Direction.UP && ( entity.contains(IsYou.class) || ignoreClass) ){
-           pos.y -= factor;
-       } else if (direction == Direction.DOWN && ( entity.contains(IsYou.class) || ignoreClass)) {
-           pos.y += factor;
-       } else if (direction == Direction.LEFT && ( entity.contains(IsYou.class) || ignoreClass)) {
-           pos.x -= factor;
-       } else if (direction == Direction.RIGHT && ( entity.contains(IsYou.class) || ignoreClass)) {
-           pos.x += factor;
+       if (direction == Direction.UP ){
+           pos.y -= 1;
+       } else if (direction == Direction.DOWN) {
+           pos.y += 1;
+       } else if (direction == Direction.LEFT) {
+           pos.x -= 1;
+       } else if (direction == Direction.RIGHT) {
+           pos.x += 1;
        }
 
-       var collidedWith = collision.collidesWith(entity);
+       if(!simulation) {
+           var collidedWith = pushableCollision.collidesWith(entity);
 
-       if(collidedWith != null){
-           if(collidedWith.contains(ecs.Components.nouns.IsPush.class))
-               updateLocation(collidedWith, 1, true);
-           else if(collidedWith.contains(ecs.Components.nouns.IsStop.class))
-               updateLocation(entity, -1, false);
+           if (collidedWith != null)
+               updateLocation(collidedWith, false);
        }
+    }
+
+    private boolean canMove(Entity entity) {
+        Entity newEntity = new Entity(entity);
+        updateLocation(newEntity, true);
+
+
+        var pushableCollidedWith = pushableCollision.collidesWith(newEntity);
+        var stoppedCollidedWith = stoppedCollision.collidesWith(newEntity);
+        if(pushableCollidedWith != null)
+            return canMove(pushableCollidedWith);
+
+        return stoppedCollidedWith == null;
     }
 
     public void updateDirection(Direction direction){

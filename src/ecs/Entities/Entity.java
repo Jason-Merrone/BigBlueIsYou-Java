@@ -17,7 +17,7 @@ public final class Entity {
             components.put(c.getClass(), c.cloneComponent());
         }
     }
-    // and make sure you have a private setter for id so you don’t bump nextId:
+
     private long id;
     private static long nextId = 0;
     public Entity() {
@@ -56,9 +56,7 @@ public final class Entity {
         if (!components.containsKey(type)) {
             throw new IllegalArgumentException(String.format("component of type %s is not a part of this entity", type.getName()));
         }
-        // The use of generic to define TComponent is motivated by this code.  The use
-        // of Class<? extends Component> won't return the actual component type, instead
-        // it only returns Component, but we need the actual component type instead.
+
         return type.cast(this.components.get(type));
     }
 
@@ -66,47 +64,30 @@ public final class Entity {
         components.clear();
     }
 
-    public void isStop(){
-        if(this.contains(ecs.Components.Movable.class))
-            this.remove(ecs.Components.Movable.class);
-
-        if(!this.contains(ecs.Components.Collidable.class))
-            this.add(new ecs.Components.Collidable());
-
-        if(this.contains(ecs.Components.nouns.IsPush.class))
-            this.remove(ecs.Components.nouns.IsPush.class);
-
-        if(!this.contains(ecs.Components.nouns.IsStop.class))
-            this.add(new ecs.Components.nouns.IsStop());
-    }
-
-    public void isPush(){
-        if(!this.contains(ecs.Components.Movable.class))
-            this.add(new ecs.Components.Movable());
-
-        if(!this.contains(ecs.Components.Collidable.class))
-            this.add(new ecs.Components.Collidable());
-
-        if(!this.contains(ecs.Components.nouns.IsPush.class))
-            this.add(new ecs.Components.nouns.IsPush());
-
-        if(this.contains(ecs.Components.nouns.IsStop.class))
-            this.remove(ecs.Components.nouns.IsStop.class);
-    }
-
-    public void isYou(){
-        if(!this.contains(ecs.Components.Movable.class))
-            this.add(new ecs.Components.Movable());
-
-        if(!this.contains(ecs.Components.Collidable.class))
-            this.add(new ecs.Components.Collidable());
-
-        if(!this.contains(ecs.Components.nouns.IsYou.class))
-            this.add(new ecs.Components.nouns.IsYou());
-
-        if(this.contains(ecs.Components.nouns.IsStop.class))
-            this.remove(ecs.Components.nouns.IsStop.class);
-    }
+//    public void isStop(){
+//        if(this.contains(ecs.Components.Movable.class))
+//            this.remove(ecs.Components.Movable.class);
+//
+//        if(!this.contains(ecs.Components.Collidable.class))
+//            this.add(new ecs.Components.Collidable());
+//    }
+//
+//    public void isPush(){
+//        if(!this.contains(ecs.Components.Movable.class))
+//            this.add(new ecs.Components.Movable());
+//
+//        if(!this.contains(ecs.Components.Collidable.class))
+//            this.add(new ecs.Components.Collidable());
+//    }
+//
+//    public void isYou(){
+//        if(!this.contains(ecs.Components.Movable.class))
+//            this.add(new ecs.Components.Movable());
+//
+//        if(!this.contains(ecs.Components.Collidable.class))
+//            this.add(new ecs.Components.Collidable());
+//
+//    }
 
     @Override
     public String toString() {

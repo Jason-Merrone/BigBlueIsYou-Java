@@ -19,6 +19,19 @@ public class Object {
         WATER
     }
 
+    private static final Map<ObjectType, Component> objectComponents = Map.ofEntries(
+            Map.entry(ObjectType.BIGBLUE, new ecs.Components.objecttypes.BigBlue()),
+            Map.entry(ObjectType.FLAG, new ecs.Components.objecttypes.Flag()),
+            Map.entry(ObjectType.FLOOR, new ecs.Components.objecttypes.Floor()),
+            Map.entry(ObjectType.FLOWERS, new ecs.Components.objecttypes.Flowers()),
+            Map.entry(ObjectType.GRASS, new ecs.Components.objecttypes.Grass()),
+            Map.entry(ObjectType.HEDGE, new ecs.Components.objecttypes.Hedge()),
+            Map.entry(ObjectType.LAVA, new ecs.Components.objecttypes.Lava()),
+            Map.entry(ObjectType.ROCK, new ecs.Components.objecttypes.Rock()),
+            Map.entry(ObjectType.WALL, new ecs.Components.objecttypes.Wall()),
+            Map.entry(ObjectType.WATER, new ecs.Components.objecttypes.Water())
+    );
+
     private static final Map<ObjectType, String> objectSprite = Map.ofEntries(
             Map.entry(ObjectType.BIGBLUE, "resources/sprites/bigblue.png"),
             Map.entry(ObjectType.FLAG, "resources/sprites/flag.png"),
@@ -32,29 +45,16 @@ public class Object {
             Map.entry(ObjectType.WATER, "resources/sprites/water.png")
     );
 
-    private static final Map<ObjectType, Component> typeComponent = Map.ofEntries(
-            Map.entry(ObjectType.BIGBLUE, new ecs.Components.nouns.IsBigBlue()),
-            Map.entry(ObjectType.FLAG, new ecs.Components.nouns.IsFlag()),
-            Map.entry(ObjectType.LAVA, new ecs.Components.nouns.IsLava()),
-            Map.entry(ObjectType.ROCK, new ecs.Components.nouns.IsRock()),
-            Map.entry(ObjectType.WALL, new ecs.Components.nouns.IsWall()),
-            Map.entry(ObjectType.WATER, new ecs.Components.nouns.IsWater())
-    );
-
     public static Entity create(ObjectType type, Vector3i position){
         var entity = new Entity();
 
-        if (typeComponent.get(type) != null)
-            entity.add(typeComponent.get(type));
-
-
         entity.add(new ecs.Components.Position(position.x, position.y, position.z));
-        entity.add(new ecs.Components.Object());
-
-
+        entity.add(new ecs.Components.Object(type));
+        entity.add(objectComponents.get(type));
         entity.add(new ecs.Components.Render());
         entity.add(new ecs.Components.IsUndoable());
         entity.add(new ecs.Components.Sprite(objectSprite.get(type)));
+        entity.add(new ecs.Components.Attributes());
         return entity;
     }
 }

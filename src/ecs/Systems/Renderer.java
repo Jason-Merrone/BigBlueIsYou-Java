@@ -1,5 +1,7 @@
 package ecs.Systems;
 
+import ecs.Components.Noun;
+import ecs.Components.Object;
 import edu.usu.graphics.Color;
 import edu.usu.graphics.Graphics2D;
 import edu.usu.graphics.Rectangle;
@@ -51,7 +53,9 @@ public class Renderer extends System {
         var spriteComp = entity.get(ecs.Components.Sprite.class);
         var pos        = entity.get(ecs.Components.Position.class);
 
-        boolean isStatic = entity.contains(ecs.Components.nouns.IsBigBlue.class) && entity.contains(ecs.Components.Object.class);
+        boolean isStatic;
+
+        isStatic = entity.contains(Object.class) && entity.get(Object.class).type == ecs.Entities.Object.ObjectType.BIGBLUE;
 
         /* build (once) or fetch the AnimatedSprite */
         Sprite anim = spriteCache.computeIfAbsent(entity, e -> {
