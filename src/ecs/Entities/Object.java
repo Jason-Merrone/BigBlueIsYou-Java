@@ -44,14 +44,17 @@ public class Object {
     public static Entity create(ObjectType type, Vector3i position){
         var entity = new Entity();
 
-        entity.add(new ecs.Components.Sprite(objectSprite.get(type)));
-        entity.add(new ecs.Components.Position(position.x, position.y, position.z));
-        entity.add(new ecs.Components.Object());
-
         if (typeComponent.get(type) != null)
             entity.add(typeComponent.get(type));
 
-        entity.add(new ecs.Components.OriginalEntity(entity));
+
+        entity.add(new ecs.Components.Position(position.x, position.y, position.z));
+        entity.add(new ecs.Components.Object());
+
+
+        entity.add(new ecs.Components.Render());
+        entity.add(new ecs.Components.IsUndoable());
+        entity.add(new ecs.Components.Sprite(objectSprite.get(type)));
         return entity;
     }
 }

@@ -1,8 +1,8 @@
 package ecs.Components;
 
-public class Noun extends Component{
+public class Movable extends Component {
     @Override
     public Component cloneComponent() {
-        return new Noun();
+        return new Movable();
     }
 }

@@ -9,4 +9,5 @@ public abstract class Component {
     /*
      * Intentionally empty class
      */
+    public abstract Component cloneComponent();
 }

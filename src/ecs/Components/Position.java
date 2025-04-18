@@ -6,21 +6,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Position extends Component {
-    public List<Vector3i> segments = new ArrayList<>();
+    public int x, y, z;
 
     public Position(int x, int y, int z) {
-        segments.add(new Vector3i(x, y, z));
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public int getX() {
-        return segments.getFirst().x;
+        return x;
     }
 
     public int getY() {
-        return segments.getFirst().y;
+        return y;
     }
 
     public int getZ() {
-        return segments.getFirst().z;
+        return z;
+    }
+
+    @Override
+    public Component cloneComponent() {
+        return new Position(x, y, z);
     }
 }

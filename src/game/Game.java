@@ -1,3 +1,5 @@
+package game;
+
 import edu.usu.graphics.*;
 
 import java.util.HashMap;

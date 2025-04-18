@@ -1,3 +1,5 @@
+package game;
+
 import edu.usu.graphics.Color;
 import edu.usu.graphics.Font;
 import edu.usu.graphics.Graphics2D;
@@ -80,7 +82,7 @@ public class MainMenuView extends GameStateView {
     public void render(double elapsedTime) {
         final float HEIGHT_MENU_ITEM = 0.075f;
         float top = -0.25f;
-        top = renderMenuItem(currentSelection == MenuState.NewGame ? fontSelected : fontMenu, "New Game", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.NewGame ? Color.YELLOW : Color.BLUE);
+        top = renderMenuItem(currentSelection == MenuState.NewGame ? fontSelected : fontMenu, "New game.Game", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.NewGame ? Color.YELLOW : Color.BLUE);
         top = renderMenuItem(currentSelection == MenuState.HighScores ? fontSelected : fontMenu, "High Scores", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.HighScores ? Color.YELLOW : Color.BLUE);
         top = renderMenuItem(currentSelection == MenuState.Help ? fontSelected : fontMenu, "Help", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.Help ? Color.YELLOW : Color.BLUE);
         top = renderMenuItem(currentSelection == MenuState.About ? fontSelected : fontMenu, "About", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.About ? Color.YELLOW : Color.BLUE);

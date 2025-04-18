@@ -1,6 +1,7 @@
 package ecs.Entities;
 
 import ecs.Components.Component;
+import ecs.Components.nouns.IsYou;
 import ecs.Components.nouns.*;
 import org.joml.Vector3i;
 
@@ -62,7 +63,9 @@ public class Noun {
         entity.add(new ecs.Components.Position(position.x, position.y, position.z));
         entity.add(new ecs.Components.Noun());
         entity.add(typeComponent.get(type));
-        entity.add(new ecs.Components.Pushable());
+        entity.add(new ecs.Components.nouns.IsPush());
+        entity.add(new ecs.Components.Render());
+        entity.add(new ecs.Components.IsUndoable());
 
         return entity;
     }
