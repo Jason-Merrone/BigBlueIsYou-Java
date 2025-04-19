@@ -8,6 +8,7 @@ import edu.usu.graphics.Graphics2D;
 import edu.usu.graphics.Rectangle;
 import edu.usu.graphics.Texture;
 import org.joml.Vector2f;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,9 @@ public class Renderer extends System {
     private final float CELL_HEIGHT;
     private final float OFFSET_X = 0.1f;
     private final float OFFSET_Y = 0.1f;
+
+    private static final float ANIMATION_SLOWDOWN = 4.0f;
+    private static final float BASE_FRAME_TIME   = 0.04f * ANIMATION_SLOWDOWN;
 
     private static class CachedSpriteInfo {
         final Sprite sprite;
@@ -34,11 +38,11 @@ public class Renderer extends System {
 
     public Renderer(Graphics2D graphics, int gridWidth, int gridHeight) {
         super(ecs.Components.Render.class, ecs.Components.Sprite.class, ecs.Components.Position.class);
-        this.graphics = graphics;
+        this.graphics   = graphics;
         this.GRID_WIDTH = gridWidth;
-        this.GRID_HEIGHT = gridHeight;
-        CELL_WIDTH = (1.0f - OFFSET_X * 2) / GRID_WIDTH;
-        CELL_HEIGHT = (1.0f - OFFSET_Y * 2) / GRID_HEIGHT;
+        this.GRID_HEIGHT= gridHeight;
+        CELL_WIDTH      = (1.0f - OFFSET_X * 2) / GRID_WIDTH;
+        CELL_HEIGHT     = (1.0f - OFFSET_Y * 2) / GRID_HEIGHT;
     }
 
     @Override
@@ -82,23 +86,23 @@ public class Renderer extends System {
 
     private void renderEntity(ecs.Entities.Entity entity, double dt) {
         var spriteComp = entity.get(ecs.Components.Sprite.class);
-        var pos = entity.get(ecs.Components.Position.class);
+        var pos        = entity.get(ecs.Components.Position.class);
         if (spriteComp == null || pos == null) return;
 
         String currentLocation = spriteComp.location;
         CachedSpriteInfo cachedInfo = spriteCache.get(entity);
         Sprite anim;
 
-        if (cachedInfo != null && cachedInfo.location != null
-                && cachedInfo.location.equals(currentLocation)) {
+        if (cachedInfo != null && cachedInfo.location.equals(currentLocation)) {
             anim = cachedInfo.sprite;
         } else {
             if (currentLocation == null || currentLocation.trim().isEmpty()) return;
             boolean isStatic = entity.contains(Object.class)
                     && entity.get(Object.class).type == ecs.Entities.Object.ObjectType.BIGBLUE;
             Texture sheet = new Texture(currentLocation);
-            float[] timings = isStatic ? new float[]{ Float.POSITIVE_INFINITY }
-                    : new float[]{ 0.04f, 0.04f, 0.04f };
+            float[] timings = isStatic
+                    ? new float[]{ Float.POSITIVE_INFINITY }
+                    : new float[]{ BASE_FRAME_TIME, BASE_FRAME_TIME, BASE_FRAME_TIME };
             Vector2f size = new Vector2f(CELL_WIDTH, CELL_HEIGHT);
             anim = new Sprite(sheet, timings, size, new Vector2f());
             spriteCache.put(entity, new CachedSpriteInfo(anim, currentLocation));
