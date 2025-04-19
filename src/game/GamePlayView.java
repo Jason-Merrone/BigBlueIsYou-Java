@@ -1,6 +1,7 @@
 package game;
 
 import ecs.Entities.Entity;
+import edu.usu.graphics.Color;
 import edu.usu.graphics.Graphics2D;
 
 import java.util.ArrayList;
@@ -48,4 +49,17 @@ public class GamePlayView extends GameStateView {
     public void render(double elapsedTime) {
         // Nothing to do because the render now occurs in the update of the game model
     }
+/*
+    private void renderWin() {
+        float HEIGHT = 1.0f;
+        float width = font.measureTextWidth("You Win", HEIGHT);
+        graphics.drawTextByHeight(font, "You Win", 0.0f - width / 2, -0.1, HEIGHT, Color.LIGHT_YELLOW);
+    }
+    private void renderLose() {
+        float HEIGHT = 1.0f;
+        float width = font.measureTextWidth("You Lose", HEIGHT);
+        graphics.drawTextByHeight(font, "You Lose", 0.0f - width / 2, -0.1, HEIGHT, Color.LIGHT_BLUE);
+    }
+    
+ */
 }
