@@ -42,7 +42,7 @@ public class Movement extends System{
 
     @Override
     public void update(double elapsedTime) {
-        
+
         boolean updatedUndo= false;
         for (var entity : entities.values()) {
             if(canMove(entity)) {
@@ -78,7 +78,7 @@ public class Movement extends System{
        if(!simulation) {
            var sinkEntity = sinkCollision.collidesWith(entity);
 
-           if(sinkEntity != null){
+           if(sinkEntity != null && !entity.contains(ecs.Components.Noun.class) && !entity.contains(ecs.Components.Verb.class)){
                sunk.add(entity);
                sunk.add(sinkEntity);
            }
