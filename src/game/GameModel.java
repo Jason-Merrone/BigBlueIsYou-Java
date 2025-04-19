@@ -7,9 +7,7 @@ import ecs.Entities.Object;
 import ecs.Entities.Object.ObjectType;
 import ecs.Systems.*;
 import ecs.Systems.KeyboardInput;
-import ecs.Systems.collisionsystems.PushableCollision;
-import ecs.Systems.collisionsystems.StoppedCollision;
-import ecs.Systems.collisionsystems.WordCollision;
+import ecs.Systems.collisionsystems.*;
 import edu.usu.graphics.Graphics2D;
 import org.joml.Vector3i;
 
@@ -25,6 +23,9 @@ public class GameModel {
     private PushableCollision sysPushableCollision;
     private StoppedCollision sysStoppedCollision;
     private WordCollision sysWordCollision;
+    private KillCollision sysKillCollision;
+    private WinCollision sysWinCollision;
+    private SinkCollision sysSinkCollision;
     private Sentence sysSentence;
     private ApplyRules sysApplyRules;
     private Undo          sysUndo;
@@ -35,6 +36,9 @@ public class GameModel {
         sysPushableCollision = new PushableCollision();
         sysStoppedCollision = new StoppedCollision();
         sysWordCollision = new WordCollision();
+        sysKillCollision = new KillCollision();
+        sysWinCollision = new WinCollision();
+        sysSinkCollision = new SinkCollision();
         sysApplyRules = new ApplyRules(this);
         sysSentence = new Sentence(sysWordCollision, sysApplyRules);
         sysMovement  = new Movement(sysPushableCollision, sysStoppedCollision, null);
@@ -81,6 +85,9 @@ public class GameModel {
         sysSentence.add(entity);
         sysWordCollision.add(entity);
         sysApplyRules.add(entity);
+        sysKillCollision.add(entity);
+        sysWinCollision.add(entity);
+        sysSinkCollision.add(entity);
         sysUndo.add(entity);
     }
 
@@ -92,6 +99,9 @@ public class GameModel {
         sysStoppedCollision.remove(id);
         sysSentence.remove(id);
         sysWordCollision.remove(id);
+        sysKillCollision.remove(id);
+        sysWinCollision.remove(id);
+        sysSinkCollision.remove(id);
         sysUndo.remove(id);
         if(!ignoreApplyRules)
             sysApplyRules.remove(id);
