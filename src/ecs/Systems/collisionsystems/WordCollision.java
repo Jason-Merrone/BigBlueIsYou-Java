@@ -24,9 +24,9 @@ public class WordCollision extends System {
                 validSentences[0] = other;
             } else if (pos.x+1 == pos2.x && pos.y == pos2.y) {
                 validSentences[1] = other;
-            } else if (pos.x == pos2.x && pos.y+1 == pos2.y) {
-                validSentences[2] = other;
             } else if (pos.x == pos2.x && pos.y-1 == pos2.y) {
+                validSentences[2] = other;
+            } else if (pos.x == pos2.x && pos.y+1 == pos2.y) {
                 validSentences[3] = other;
             }
         }
