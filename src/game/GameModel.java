@@ -37,9 +37,10 @@ public class GameModel {
         sysWordCollision = new WordCollision();
         sysApplyRules = new ApplyRules(this);
         sysSentence = new Sentence(sysWordCollision, sysApplyRules);
-        sysMovement  = new Movement(sysPushableCollision, sysStoppedCollision);
+        sysMovement  = new Movement(sysPushableCollision, sysStoppedCollision, null);
         sysKeyboard  = new KeyboardInput(graphics.getWindow(), sysMovement, null, sysSentence);
         sysUndo      = new Undo(sysRenderer, sysPushableCollision, sysMovement, sysKeyboard, sysStoppedCollision,sysWordCollision,sysSentence, sysApplyRules);
+        sysMovement.setUndo(sysUndo);
         sysKeyboard.setUndo(sysUndo);
 
         Entity rock    = Object.create(ObjectType.ROCK,    new Vector3i(4, 3, 1));

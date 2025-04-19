@@ -36,22 +36,18 @@ public class KeyboardInput extends System {
             undo.pop();
             sentence.update(dt);
         } else if (w && !wasW) {
-            undo.push();
             movement.updateDirection(Movement.Direction.UP);
             movement.update(dt);
             sentence.update(dt);
         } else if (a && !wasA) {
-            undo.push();
             movement.updateDirection(Movement.Direction.LEFT);
             movement.update(dt);
             sentence.update(dt);
         } else if (s && !wasS) {
-            undo.push();
             movement.updateDirection(Movement.Direction.DOWN);
             movement.update(dt);
             sentence.update(dt);
         } else if (d && !wasD) {
-            undo.push();
             movement.updateDirection(Movement.Direction.RIGHT);
             movement.update(dt);
             sentence.update(dt);

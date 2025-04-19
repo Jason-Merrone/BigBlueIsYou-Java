@@ -13,17 +13,27 @@ public class Movement extends System{
 
     PushableCollision pushableCollision;
     StoppedCollision stoppedCollision;
+    Undo undo;
 
-    public Movement(PushableCollision collision, StoppedCollision stoppedCollision) {
+    public Movement(PushableCollision collision, StoppedCollision stoppedCollision, Undo undo) {
         super(ecs.Components.objectattributes.You.class);
         this.pushableCollision = collision;
         this.stoppedCollision = stoppedCollision;
+        this.undo = undo;
     }
+
+    public void setUndo(Undo undo) {
+        this.undo = undo;
+    }
+
     @Override
     public void update(double elapsedTime) {
         for (var entity : entities.values()) {
-            if(canMove(entity))
+            if(canMove(entity)) {
+                undo.push();
                 updateLocation(entity, false);
+
+            }
         }
     }
 
