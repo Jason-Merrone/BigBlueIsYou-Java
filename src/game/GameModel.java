@@ -12,6 +12,7 @@ import edu.usu.graphics.Graphics2D;
 import org.joml.Vector3i;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameModel {
     private static final int GRID_WIDTH  = 10;
@@ -29,10 +30,10 @@ public class GameModel {
     private Sentence sysSentence;
     private ApplyRules sysApplyRules;
     private Undo          sysUndo;
-    private ArrayList<Entity> entities = new ArrayList<>();
 
-    public void initialize(Graphics2D graphics) {
-        sysRenderer  = new Renderer(graphics, GRID_WIDTH, GRID_HEIGHT);
+
+    public void initialize(Graphics2D graphics, LevelReader gameLevels) {
+        sysRenderer  = new Renderer(graphics, gameLevels.getCurrentDescriptor().getWidth(), gameLevels.getCurrentDescriptor().getHeight());
         sysPushableCollision = new PushableCollision();
         sysStoppedCollision = new StoppedCollision();
         sysWordCollision = new WordCollision();
@@ -47,6 +48,9 @@ public class GameModel {
         sysMovement.setUndo(sysUndo);
         sysKeyboard.setUndo(sysUndo);
 
+        List<Entity> entities = gameLevels.loadLevelEntities(gameLevels.getCurrentDescriptor());
+
+        /*
         Entity rock    = Object.create(ObjectType.ROCK,    new Vector3i(4, 3, 1));
         Entity bigBlue = Object.create(ObjectType.BIGBLUE, new Vector3i(4, 4, 2));
 
@@ -67,6 +71,11 @@ public class GameModel {
         addEntity(rockWord);
         addEntity(is2);
         addEntity(stopWord);
+
+         */
+        for (Entity entity : entities) {
+            addEntity(entity);
+        }
 
         sysUndo.push();
     }

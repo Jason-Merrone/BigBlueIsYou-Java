@@ -51,7 +51,7 @@ public class Renderer extends System {
                 -0.5f + OFFSET_Y,
                 GRID_WIDTH * CELL_WIDTH,
                 GRID_HEIGHT * CELL_HEIGHT);
-        graphics.draw(bg, Color.BLUE);
+        graphics.draw(bg, Color.DARK_GRAY);
 
         // render all non-“You” entities first
         for (var entity : entities.values()) {

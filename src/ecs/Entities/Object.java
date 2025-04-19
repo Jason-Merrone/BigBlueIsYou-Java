@@ -64,6 +64,10 @@ public class Object {
         entity.add(new ecs.Components.IsUndoable());
         entity.add(new ecs.Components.Sprite(objectSprite.get(type)));
         entity.add(new ecs.Components.Attributes());
+
+        if(type == ObjectType.HEDGE){
+            entity.add(new ecs.Components.objectattributes.Stop());
+        }
         return entity;
     }
 }

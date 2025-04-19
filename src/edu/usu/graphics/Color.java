@@ -50,6 +50,7 @@ public class Color {
     public static final Color YELLOW = new Color(1, 1, 0);
     public static final Color LIGHT_GRAY = new Color(0.7f, 0.7f, 0.7f);
     public static final Color LIGHT_BLUE = new Color(0.7f, 0.7f, 1);
+    public static final Color DARK_GRAY = new Color(0.2f, 0.2f, 0.21f);
 
     public static final Color CORNFLOWER_BLUE = new Color(100 / 255f, 149 / 255f, 237 / 255f);
 }

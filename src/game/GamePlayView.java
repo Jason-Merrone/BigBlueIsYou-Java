@@ -27,13 +27,8 @@ public class GamePlayView extends GameStateView {
 
     @Override
     public void initializeSession() {
-        List<Entity> entities = gameLevels.loadLevelEntities(gameLevels.getCurrentDescriptor());
-        for (Entity entity : entities) {
-            System.out.println(entity);
-        }
-
         gameModel = new GameModel();
-        gameModel.initialize(graphics);
+        gameModel.initialize(graphics, gameLevels);
         nextGameState = GameStateEnum.GamePlay;
     }
 
