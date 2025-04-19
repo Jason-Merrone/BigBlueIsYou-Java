@@ -10,8 +10,7 @@ public class MainMenuView extends GameStateView {
 
     private enum MenuState {
         NewGame,
-        HighScores,
-        Help,
+        Controls,
         About,
         Quit;
 
@@ -36,35 +35,37 @@ public class MainMenuView extends GameStateView {
     private Font fontSelected;
 
     @Override
-    public void initialize(Graphics2D graphics) {
-        super.initialize(graphics);
+    public void initialize(Graphics2D graphics, LevelReader gameLevels, InputConfig inputConfig) {
+        super.initialize(graphics, gameLevels, inputConfig);
 
-        fontMenu = new Font("resources/fonts/Roboto-Regular.ttf", 48, false);
-        fontSelected = new Font("resources/fonts/Roboto-Bold.ttf", 48, false);
+        fontMenu = new Font("resources/fonts/Gaegu-Regular.ttf", 48, false);
+        fontSelected = new Font("resources/fonts/Gaegu-Bold.ttf", 48, false);
+    }
 
+    @Override
+    public void initializeSession() {
+        initializeKeys();
+        nextGameState = GameStateEnum.MainMenu;
+    }
+
+    void initializeKeys() {
         inputKeyboard = new KeyboardInput(graphics.getWindow());
         // Arrow keys to navigate the menu
-        inputKeyboard.registerCommand(GLFW_KEY_UP, true, (double elapsedTime) -> {
+        inputKeyboard.registerCommand(inputConfig.getActionKey(InputConfig.Action.UP), true, (double elapsedTime) -> {
             currentSelection = currentSelection.previous();
         });
-        inputKeyboard.registerCommand(GLFW_KEY_DOWN, true, (double elapsedTime) -> {
+        inputKeyboard.registerCommand(inputConfig.getActionKey(InputConfig.Action.DOWN), true, (double elapsedTime) -> {
             currentSelection = currentSelection.next();
         });
         // When Enter is pressed, set the appropriate new game state
         inputKeyboard.registerCommand(GLFW_KEY_ENTER, true, (double elapsedTime) -> {
             nextGameState = switch (currentSelection) {
-                case MenuState.NewGame -> GameStateEnum.GamePlay;
-                case MenuState.HighScores -> GameStateEnum.HighScores;
-                case MenuState.Help -> GameStateEnum.Help;
+                case MenuState.NewGame -> GameStateEnum.LevelSelect;
+                case MenuState.Controls -> GameStateEnum.Controls;
                 case MenuState.About -> GameStateEnum.About;
                 case MenuState.Quit -> GameStateEnum.Quit;
             };
         });
-    }
-
-    @Override
-    public void initializeSession() {
-        nextGameState = GameStateEnum.MainMenu;
     }
 
     @Override
@@ -81,12 +82,15 @@ public class MainMenuView extends GameStateView {
     @Override
     public void render(double elapsedTime) {
         final float HEIGHT_MENU_ITEM = 0.075f;
-        float top = -0.25f;
-        top = renderMenuItem(currentSelection == MenuState.NewGame ? fontSelected : fontMenu, "New game.Game", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.NewGame ? Color.YELLOW : Color.BLUE);
-        top = renderMenuItem(currentSelection == MenuState.HighScores ? fontSelected : fontMenu, "High Scores", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.HighScores ? Color.YELLOW : Color.BLUE);
-        top = renderMenuItem(currentSelection == MenuState.Help ? fontSelected : fontMenu, "Help", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.Help ? Color.YELLOW : Color.BLUE);
-        top = renderMenuItem(currentSelection == MenuState.About ? fontSelected : fontMenu, "About", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.About ? Color.YELLOW : Color.BLUE);
-        renderMenuItem(currentSelection == MenuState.Quit ? fontSelected : fontMenu, "Quit", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.Quit ? Color.YELLOW : Color.BLUE);
+        float top = -0.1f;
+
+        float width = fontMenu.measureTextWidth("BigBlue IS YOU", 0.12f);
+        graphics.drawTextByHeight(fontSelected, "BigBlue IS YOU", 0.0f - width / 2, -0.3f, 0.12f, Color.LIGHT_BLUE);
+
+        top = renderMenuItem(currentSelection == MenuState.NewGame ? fontSelected : fontMenu, "New Game", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.NewGame ? Color.WHITE : Color.LIGHT_GRAY);
+        top = renderMenuItem(currentSelection == MenuState.Controls ? fontSelected : fontMenu, "Controls", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.Controls ? Color.WHITE : Color.LIGHT_GRAY);
+        top = renderMenuItem(currentSelection == MenuState.About ? fontSelected : fontMenu, "Credits", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.About ? Color.WHITE : Color.LIGHT_GRAY);
+        renderMenuItem(currentSelection == MenuState.Quit ? fontSelected : fontMenu, "Quit", top, HEIGHT_MENU_ITEM, currentSelection == MenuState.Quit ? Color.WHITE : Color.LIGHT_GRAY);
     }
 
     /**
@@ -94,8 +98,9 @@ public class MainMenuView extends GameStateView {
      * It also returns the vertical position to draw the next menu item
      */
     private float renderMenuItem(Font font, String text, float top, float height, Color color) {
-        float width = font.measureTextWidth(text, height);
-        graphics.drawTextByHeight(font, text, 0.0f - width / 2, top, height, color);
+        float trueHeight = height * 1.3f;
+        float width = font.measureTextWidth(text, trueHeight);
+        graphics.drawTextByHeight(font, text, 0.0f - width / 2, top, trueHeight, color);
 
         return top + height;
     }

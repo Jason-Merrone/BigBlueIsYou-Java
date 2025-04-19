@@ -4,10 +4,14 @@ import edu.usu.graphics.Graphics2D;
 
 public abstract class GameStateView implements IGameState {
     protected Graphics2D graphics;
+    protected LevelReader gameLevels;
+    protected InputConfig inputConfig;
 
     @Override
-    public void initialize(Graphics2D graphics) {
+    public void initialize(Graphics2D graphics, LevelReader gameLevels, InputConfig inputConfig) {
         this.graphics = graphics;
+        this.gameLevels = gameLevels;
+        this.inputConfig = inputConfig;
     }
 
     @Override

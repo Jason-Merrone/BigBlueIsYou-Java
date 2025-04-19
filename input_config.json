@@ -1,0 +1,10 @@
+{
+  "actionKey": {
+    "RIGHT": 68,
+    "RESET": 82,
+    "UP": 87,
+    "UNDO": 90,
+    "DOWN": 83,
+    "LEFT": 65
+  }
+}

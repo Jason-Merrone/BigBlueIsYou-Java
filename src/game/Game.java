@@ -2,6 +2,7 @@ package game;
 
 import edu.usu.graphics.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -17,20 +18,29 @@ public class Game {
         this.graphics = graphics;
     }
 
+    private InputConfig inputConfig;
+    private LevelReader gameLevels;
+
     public void initialize() {
         states = new HashMap<>() {
             {
                 put(GameStateEnum.MainMenu, new MainMenuView());
                 put(GameStateEnum.GamePlay, new GamePlayView());
-                put(GameStateEnum.HighScores, new HighScoresView());
-                put(GameStateEnum.Help, new HelpView());
                 put(GameStateEnum.About, new AboutView());
+                put(GameStateEnum.Controls, new ControlsView());
+                put(GameStateEnum.LevelSelect, new LevelSelectView());
             }
         };
 
+        inputConfig = new InputConfig();
+        inputConfig.load();
+        gameLevels = new LevelReader();
+        gameLevels.initializeLevels();
+
+
         // Give all game states a chance to initialize, other than the constructor
         for (var state : states.values()) {
-            state.initialize(graphics);
+            state.initialize(graphics, gameLevels, inputConfig);
         }
 
         currentState = states.get(GameStateEnum.MainMenu);
