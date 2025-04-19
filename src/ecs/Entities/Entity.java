@@ -64,31 +64,6 @@ public final class Entity {
         components.clear();
     }
 
-//    public void isStop(){
-//        if(this.contains(ecs.Components.Movable.class))
-//            this.remove(ecs.Components.Movable.class);
-//
-//        if(!this.contains(ecs.Components.Collidable.class))
-//            this.add(new ecs.Components.Collidable());
-//    }
-//
-//    public void isPush(){
-//        if(!this.contains(ecs.Components.Movable.class))
-//            this.add(new ecs.Components.Movable());
-//
-//        if(!this.contains(ecs.Components.Collidable.class))
-//            this.add(new ecs.Components.Collidable());
-//    }
-//
-//    public void isYou(){
-//        if(!this.contains(ecs.Components.Movable.class))
-//            this.add(new ecs.Components.Movable());
-//
-//        if(!this.contains(ecs.Components.Collidable.class))
-//            this.add(new ecs.Components.Collidable());
-//
-//    }
-
     @Override
     public String toString() {
         return String.format("%d: %s", id, components.values().stream().map(c -> c.getClass().getSimpleName()).collect(Collectors.joining(", ")));

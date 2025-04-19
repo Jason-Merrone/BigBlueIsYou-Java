@@ -1,32 +1,38 @@
 package ecs.Components;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import ecs.Entities.AttributesEnum;
 
 public class Attributes extends Component {
 
-    private HashSet<ecs.Entities.AttributesEnum> attributes = new HashSet<>();
+    public ecs.Entities.AttributesEnum attribute = null;
 
-    public Attributes(ecs.Entities.AttributesEnum... attributes){
-        this.attributes.addAll(Arrays.asList(attributes));
+    public Attributes() {
+        this.attribute = null;
+    }
+
+    public Attributes(ecs.Entities.AttributesEnum attribute) {
+        this.attribute = attribute;
     }
 
     @Override
     public Component cloneComponent() {
-        Attributes clonedAttributes = new Attributes();
-        clonedAttributes.attributes.addAll(this.attributes);
+        Attributes clonedAttributes = new Attributes(this.attribute);
         return clonedAttributes;
     }
 
     public boolean hasAttribute(ecs.Entities.AttributesEnum attribute) {
-        return attributes.contains(attribute);
+        return this.attribute != null && this.attribute == attribute;
     }
 
-    public void addAttribute(ecs.Entities.AttributesEnum attribute) {
-        attributes.add(attribute);
+    public void setAttribute(ecs.Entities.AttributesEnum attribute) {
+        this.attribute = attribute;
     }
 
-    public void removeAttribute(ecs.Entities.AttributesEnum attribute) {
-        attributes.remove(attribute);
+    public void clearAttribute() {
+        this.attribute = null;
+    }
+
+    public ecs.Entities.AttributesEnum getAttribute() {
+        return this.attribute;
     }
 }

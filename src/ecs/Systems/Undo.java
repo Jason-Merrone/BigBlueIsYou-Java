@@ -3,6 +3,7 @@ package ecs.Systems;
 import ecs.Entities.Entity;
 import ecs.Systems.collisionsystems.PushableCollision;
 import ecs.Systems.collisionsystems.StoppedCollision;
+import ecs.Systems.collisionsystems.WordCollision;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -15,6 +16,9 @@ public class Undo extends System {
     private final Renderer          sysRenderer;
     private final PushableCollision sysCollision;
     private final StoppedCollision  sysStoppedCollision;
+    private final WordCollision     sysWordCollision;
+    private final Sentence          sysSentence;
+    private final ApplyRules        sysApplyRules;   // NEW
     private final Movement          sysMovement;
     private final KeyboardInput     sysKeyboard;
 
@@ -22,13 +26,19 @@ public class Undo extends System {
                 PushableCollision sysCollision,
                 Movement          sysMovement,
                 KeyboardInput     sysKeyboard,
-                StoppedCollision  sysStoppedCollision) {
+                StoppedCollision  sysStoppedCollision,
+                WordCollision     sysWordCollision,
+                Sentence          sysSentence,
+                ApplyRules        sysApplyRules) {   // NEW
         super();
-        this.sysRenderer        = sysRenderer;
-        this.sysCollision       = sysCollision;
+        this.sysRenderer         = sysRenderer;
+        this.sysCollision        = sysCollision;
+        this.sysMovement         = sysMovement;
+        this.sysKeyboard         = sysKeyboard;
         this.sysStoppedCollision = sysStoppedCollision;
-        this.sysMovement        = sysMovement;
-        this.sysKeyboard        = sysKeyboard;
+        this.sysWordCollision    = sysWordCollision;
+        this.sysSentence         = sysSentence;
+        this.sysApplyRules       = sysApplyRules;    // NEW
     }
 
     @Override
@@ -42,12 +52,15 @@ public class Undo extends System {
         if (undoStack.isEmpty()) return;
         Map<Long, Entity> snapshot = undoStack.pop();
 
-        restore(this,              snapshot);
-        restore(sysRenderer,       snapshot);
-        restore(sysCollision,      snapshot);
+        restore(this,                snapshot);
+        restore(sysRenderer,         snapshot);
+        restore(sysCollision,        snapshot);
         restore(sysStoppedCollision, snapshot);
-        restore(sysMovement,       snapshot);
-        restore(sysKeyboard,       snapshot);
+        restore(sysWordCollision,    snapshot);
+        restore(sysSentence,         snapshot);
+        restore(sysApplyRules,       snapshot);      // NEW
+        restore(sysMovement,         snapshot);
+        restore(sysKeyboard,         snapshot);
     }
 
     private void restore(System system, Map<Long, Entity> snapshot) {

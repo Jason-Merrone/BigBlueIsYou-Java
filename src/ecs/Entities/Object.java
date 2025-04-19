@@ -19,7 +19,7 @@ public class Object {
         WATER
     }
 
-    private static final Map<ObjectType, Component> objectComponents = Map.ofEntries(
+    public static final Map<ObjectType, Component> objectComponents = Map.ofEntries(
             Map.entry(ObjectType.BIGBLUE, new ecs.Components.objecttypes.BigBlue()),
             Map.entry(ObjectType.FLAG, new ecs.Components.objecttypes.Flag()),
             Map.entry(ObjectType.FLOOR, new ecs.Components.objecttypes.Floor()),
@@ -32,7 +32,16 @@ public class Object {
             Map.entry(ObjectType.WATER, new ecs.Components.objecttypes.Water())
     );
 
-    private static final Map<ObjectType, String> objectSprite = Map.ofEntries(
+    public static final Map<AttributesEnum, Component> objectAttributes = Map.ofEntries(
+            Map.entry(AttributesEnum.PUSHABLE, new ecs.Components.objectattributes.Push()),
+            Map.entry(AttributesEnum.KILL, new ecs.Components.objectattributes.Kill()),
+            Map.entry(AttributesEnum.SINK, new ecs.Components.objectattributes.Sink()),
+            Map.entry(AttributesEnum.STOP, new ecs.Components.objectattributes.Stop()),
+            Map.entry(AttributesEnum.WIN, new ecs.Components.objectattributes.Win()),
+            Map.entry(AttributesEnum.YOU, new ecs.Components.objectattributes.You())
+    );
+
+    public static final Map<ObjectType, String> objectSprite = Map.ofEntries(
             Map.entry(ObjectType.BIGBLUE, "resources/sprites/bigblue.png"),
             Map.entry(ObjectType.FLAG, "resources/sprites/flag.png"),
             Map.entry(ObjectType.FLOOR, "resources/sprites/floor.png"),

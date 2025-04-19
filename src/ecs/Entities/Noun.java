@@ -3,6 +3,8 @@ package ecs.Entities;
 import ecs.Components.Component;
 import org.joml.Vector3i;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 
 public class Noun {
@@ -21,6 +23,44 @@ public class Noun {
         WIN,
         YOU
     }
+
+    public static final HashSet<NounType> objectNounTypes = new HashSet<>(Arrays.asList(NounType.ROCK, NounType.BIGBLUE, NounType.FLAG,NounType.LAVA,NounType.WALL, NounType.WATER));
+
+    public static final Map<NounType,Class<? extends Component>> nounTypeToObject = Map.ofEntries(
+            Map.entry(Noun.NounType.BIGBLUE,ecs.Components.objecttypes.BigBlue.class),
+            Map.entry(Noun.NounType.FLAG,ecs.Components.objecttypes.Flag.class),
+            Map.entry(Noun.NounType.LAVA,ecs.Components.objecttypes.Lava.class),
+            Map.entry(Noun.NounType.ROCK,ecs.Components.objecttypes.Rock.class),
+            Map.entry(Noun.NounType.WALL,ecs.Components.objecttypes.Wall.class),
+            Map.entry(Noun.NounType.WATER,ecs.Components.objecttypes.Water.class)
+    );
+
+    public static Map<NounType, Class<? extends Component>> nounToAttribute = Map.ofEntries(
+            Map.entry(NounType.KILL, ecs.Components.objectattributes.Kill.class),
+            Map.entry(NounType.PUSH, ecs.Components.objectattributes.Push.class),
+            Map.entry(NounType.SINK, ecs.Components.objectattributes.Sink.class),
+            Map.entry(NounType.STOP, ecs.Components.objectattributes.Stop.class),
+            Map.entry(NounType.WIN, ecs.Components.objectattributes.Win.class),
+            Map.entry(NounType.YOU, ecs.Components.objectattributes.You.class)
+    );
+
+    public static Map<NounType, AttributesEnum> nounToAttributeEnum = Map.ofEntries(
+            Map.entry(NounType.KILL, AttributesEnum.KILL),
+            Map.entry(NounType.PUSH, AttributesEnum.PUSHABLE),
+            Map.entry(NounType.SINK, AttributesEnum.SINK),
+            Map.entry(NounType.STOP, AttributesEnum.STOP),
+            Map.entry(NounType.WIN, AttributesEnum.WIN),
+            Map.entry(NounType.YOU, AttributesEnum.YOU)
+    );
+
+    public static Map<NounType, Object.ObjectType> nounToObjectType= Map.ofEntries(
+            Map.entry(Noun.NounType.BIGBLUE,Object.ObjectType.BIGBLUE),
+            Map.entry(Noun.NounType.FLAG,Object.ObjectType.FLAG),
+            Map.entry(Noun.NounType.LAVA,Object.ObjectType.LAVA),
+            Map.entry(Noun.NounType.ROCK,Object.ObjectType.ROCK),
+            Map.entry(Noun.NounType.WALL,Object.ObjectType.WALL),
+            Map.entry(Noun.NounType.WATER,Object.ObjectType.WATER)
+    );
 
 
     private static final Map<Noun.NounType, String> nounSprite = Map.ofEntries(
