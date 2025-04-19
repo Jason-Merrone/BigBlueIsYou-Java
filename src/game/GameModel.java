@@ -42,47 +42,36 @@ public class GameModel {
         sysSinkCollision = new SinkCollision();
         sysApplyRules = new ApplyRules(this);
         sysSentence = new Sentence(sysWordCollision, sysApplyRules);
-        sysMovement  = new Movement(sysPushableCollision, sysStoppedCollision, null);
+        sysMovement  = new Movement(sysPushableCollision, sysStoppedCollision, null, sysWinCollision, sysKillCollision, sysSinkCollision);
         sysKeyboard  = new KeyboardInput(graphics.getWindow(), sysMovement, null, sysSentence);
-        sysUndo      = new Undo(sysRenderer, sysPushableCollision, sysMovement, sysKeyboard, sysStoppedCollision,sysWordCollision,sysSentence, sysApplyRules);
+        sysUndo      = new Undo(sysRenderer, sysPushableCollision, sysMovement, sysKeyboard, sysStoppedCollision,sysWordCollision,sysSentence, sysApplyRules, sysWinCollision, sysKillCollision, sysSinkCollision);
         sysMovement.setUndo(sysUndo);
         sysKeyboard.setUndo(sysUndo);
 
         List<Entity> entities = gameLevels.loadLevelEntities(gameLevels.getCurrentDescriptor());
 
-        /*
-        Entity rock    = Object.create(ObjectType.ROCK,    new Vector3i(4, 3, 1));
-        Entity bigBlue = Object.create(ObjectType.BIGBLUE, new Vector3i(4, 4, 2));
-
-        Entity is = Verb.create(Verb.VerbType.IS,new Vector3i(1, 1, 1));
-        Entity you = Noun.create(Noun.NounType.YOU,new Vector3i(2, 1, 1));
-        Entity baba = Noun.create(Noun.NounType.BIGBLUE,new Vector3i(0, 1, 1));
-
-        Entity rockWord = Noun.create(Noun.NounType.ROCK,new Vector3i(4, 1, 1));
-        Entity is2 = Verb.create(Verb.VerbType.IS,new Vector3i(5, 1, 1));
-        Entity stopWord = Noun.create(Noun.NounType.STOP,new Vector3i(6, 1, 1));
-
-
-        addEntity(rock);
-        addEntity(bigBlue);
-        addEntity(is);
-        addEntity(you);
-        addEntity(baba);
-        addEntity(rockWord);
-        addEntity(is2);
-        addEntity(stopWord);
-
-         */
         for (Entity entity : entities) {
             addEntity(entity);
         }
 
+        sysSentence.update(0);
         sysUndo.push();
     }
 
     public void update(double elapsedTime) {
-        sysKeyboard.update(elapsedTime);
+
+        if(!sysMovement.isWin)
+            sysKeyboard.update(elapsedTime);
         sysRenderer.update(elapsedTime);
+        for(var entity : sysMovement.killed){
+            removeEntity(entity.getId(), false);
+        }
+        sysMovement.killed.clear();
+
+        for(var entity : sysMovement.sunk){
+            removeEntity(entity.getId(), false);
+        }
+        sysMovement.sunk.clear();
     }
 
     public void addEntity(Entity entity) {

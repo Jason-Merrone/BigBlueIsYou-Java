@@ -175,8 +175,6 @@ public class LevelReader {
         if (objectChar == null) return;
         if (objectChar == ' ') return;
 
-        System.out.println("objectChar: " + objectChar + " row: " + row + " col: " + col);
-
         Vector3i position = new Vector3i();
         position.x = col;
         position.y = row;

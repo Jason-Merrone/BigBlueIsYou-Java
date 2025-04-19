@@ -39,12 +39,10 @@ public class ApplyRules extends System {
                 var key = entry.getKey();
                 var type = Noun.nounTypeToObject.get(key.get(ecs.Components.Noun.class).type);
                 if(Noun.objectNounTypes.contains(entry.getValue().get(ecs.Components.Noun.class).type) && entity.contains(type)){
-                    java.lang.System.out.println("test");
                     entity.remove(type);
                     entity.add(Noun.nounTypeToObject.get(entry.getValue().get(ecs.Components.Noun.class).type).newInstance());
                     entity.get(Object.class).type = Noun.nounToObjectType.get(entry.getValue().get(ecs.Components.Noun.class).type);
                     entity.get(Sprite.class).location = ecs.Entities.Object.objectSprite.get(entity.get(Object.class).type);
-                    java.lang.System.out.println(entity.get(Sprite.class).location);
                 }
             }
 

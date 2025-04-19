@@ -4,6 +4,9 @@ import ecs.Entities.Entity;
 import ecs.Systems.collisionsystems.PushableCollision;
 import ecs.Systems.collisionsystems.StoppedCollision;
 import ecs.Systems.collisionsystems.WordCollision;
+import ecs.Systems.collisionsystems.WinCollision;
+import ecs.Systems.collisionsystems.KillCollision;
+import ecs.Systems.collisionsystems.SinkCollision;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -17,8 +20,11 @@ public class Undo extends System {
     private final PushableCollision sysCollision;
     private final StoppedCollision  sysStoppedCollision;
     private final WordCollision     sysWordCollision;
+    private final WinCollision      sysWinCollision;
+    private final KillCollision     sysKillCollision;
+    private final SinkCollision     sysSinkCollision;
     private final Sentence          sysSentence;
-    private final ApplyRules        sysApplyRules;   // NEW
+    private final ApplyRules        sysApplyRules;
     private final Movement          sysMovement;
     private final KeyboardInput     sysKeyboard;
 
@@ -29,7 +35,11 @@ public class Undo extends System {
                 StoppedCollision  sysStoppedCollision,
                 WordCollision     sysWordCollision,
                 Sentence          sysSentence,
-                ApplyRules        sysApplyRules) {   // NEW
+                ApplyRules        sysApplyRules,
+                WinCollision      sysWinCollision,
+                KillCollision     sysKillCollision,
+                SinkCollision     sysSinkCollision
+                ) {
         super();
         this.sysRenderer         = sysRenderer;
         this.sysCollision        = sysCollision;
@@ -37,8 +47,11 @@ public class Undo extends System {
         this.sysKeyboard         = sysKeyboard;
         this.sysStoppedCollision = sysStoppedCollision;
         this.sysWordCollision    = sysWordCollision;
+        this.sysWinCollision     = sysWinCollision;
+        this.sysKillCollision    = sysKillCollision;
+        this.sysSinkCollision    = sysSinkCollision;
         this.sysSentence         = sysSentence;
-        this.sysApplyRules       = sysApplyRules;    // NEW
+        this.sysApplyRules       = sysApplyRules;
     }
 
     @Override
@@ -57,8 +70,11 @@ public class Undo extends System {
         restore(sysCollision,        snapshot);
         restore(sysStoppedCollision, snapshot);
         restore(sysWordCollision,    snapshot);
+        restore(sysWinCollision,     snapshot);
+        restore(sysKillCollision,    snapshot);
+        restore(sysSinkCollision,    snapshot);
         restore(sysSentence,         snapshot);
-        restore(sysApplyRules,       snapshot);      // NEW
+        restore(sysApplyRules,       snapshot);
         restore(sysMovement,         snapshot);
         restore(sysKeyboard,         snapshot);
     }
