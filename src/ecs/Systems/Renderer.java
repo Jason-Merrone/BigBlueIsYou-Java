@@ -34,19 +34,18 @@ public class Renderer extends System {
     // --- Cache now stores CachedSpriteInfo objects ---
     private final Map<ecs.Entities.Entity, CachedSpriteInfo> spriteCache = new HashMap<>();
 
-
     public Renderer(Graphics2D graphics, int gridWidth, int gridHeight) {
-        super(ecs.Components.Render.class, ecs.Components.Sprite.class, ecs.Components.Position.class); // Ensure Renderer requires necessary components
+        super(ecs.Components.Render.class, ecs.Components.Sprite.class, ecs.Components.Position.class);
         this.graphics = graphics;
         this.GRID_WIDTH = gridWidth;
         this.GRID_HEIGHT = gridHeight;
-        CELL_WIDTH = (1.0f - OFFSET_X * 2) / GRID_WIDTH;
+        CELL_WIDTH  = (1.0f - OFFSET_X * 2) / GRID_WIDTH;
         CELL_HEIGHT = (1.0f - OFFSET_Y * 2) / GRID_HEIGHT;
     }
 
     @Override
     public void update(double elapsedTime) {
-
+        // draw background
         Rectangle bg = new Rectangle(
                 -0.5f + OFFSET_X,
                 -0.5f + OFFSET_Y,
@@ -54,14 +53,24 @@ public class Renderer extends System {
                 GRID_HEIGHT * CELL_HEIGHT);
         graphics.draw(bg, Color.BLUE);
 
+        // render all non-“You” entities first
         for (var entity : entities.values()) {
-            renderEntity(entity, elapsedTime);
+            if (!entity.contains(ecs.Components.objectattributes.You.class)) {
+                renderEntity(entity, elapsedTime);
+            }
+        }
+
+        // render the “You” entity on top
+        for (var entity : entities.values()) {
+            if (entity.contains(ecs.Components.objectattributes.You.class)) {
+                renderEntity(entity, elapsedTime);
+            }
         }
     }
 
     private void renderEntity(ecs.Entities.Entity entity, double dt) {
         var spriteComp = entity.get(ecs.Components.Sprite.class);
-        var pos = entity.get(ecs.Components.Position.class);
+        var pos        = entity.get(ecs.Components.Position.class);
 
         if (spriteComp == null || pos == null) {
             return;
@@ -71,35 +80,33 @@ public class Renderer extends System {
         CachedSpriteInfo cachedInfo = spriteCache.get(entity);
         Sprite anim;
 
-        if (cachedInfo != null && cachedInfo.location != null && cachedInfo.location.equals(currentLocation)) {
+        if (cachedInfo != null
+                && cachedInfo.location != null
+                && cachedInfo.location.equals(currentLocation)) {
 
             anim = cachedInfo.sprite;
         } else {
-            // Check if location is valid before creating Texture
             if (currentLocation == null || currentLocation.trim().isEmpty()) {
-                // java.lang.System.err.println("Entity " + entity.getId() + " has null or empty sprite location.");
                 return;
             }
 
-            boolean isStatic = entity.contains(Object.class) && entity.get(Object.class).type == ecs.Entities.Object.ObjectType.BIGBLUE; // Determine if static
-            Texture sheet = new Texture(currentLocation); // Load texture from the CURRENT location
-
-            // *** CORRECTED LINE ***
-            float[] timings = isStatic ? new float[]{ Float.POSITIVE_INFINITY } : new float[]{ 0.04f, 0.04f, 0.04f }; // Example timings
-
+            boolean isStatic = entity.contains(Object.class)
+                    && entity.get(Object.class).type == ecs.Entities.Object.ObjectType.BIGBLUE;
+            Texture sheet = new Texture(currentLocation);
+            float[] timings = isStatic
+                    ? new float[]{ Float.POSITIVE_INFINITY }
+                    : new float[]{ 0.04f, 0.04f, 0.04f };
             Vector2f size = new Vector2f(CELL_WIDTH, CELL_HEIGHT);
-            anim = new Sprite(sheet, timings, size, new Vector2f()); // Create the new sprite
-
-            // Update the cache with the new sprite and its location
+            anim = new Sprite(sheet, timings, size, new Vector2f());
             spriteCache.put(entity, new CachedSpriteInfo(anim, currentLocation));
         }
 
-        /* update sprite centre to this entity’s grid cell */
+        // position sprite
         float cx = -0.5f + OFFSET_X + pos.getX() * CELL_WIDTH + CELL_WIDTH * 0.5f;
         float cy = -0.5f + OFFSET_Y + pos.getY() * CELL_HEIGHT + CELL_HEIGHT * 0.5f;
         anim.setCenter(cx, cy);
 
-        /* progress animation and draw */
+        // draw
         anim.update(dt);
         anim.draw(graphics, Color.WHITE);
     }
