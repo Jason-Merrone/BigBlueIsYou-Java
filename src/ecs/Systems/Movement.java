@@ -35,17 +35,22 @@ public class Movement extends System{
         this.sinkCollision = sinkCollision;
     }
 
+
     public void setUndo(Undo undo) {
         this.undo = undo;
     }
 
     @Override
     public void update(double elapsedTime) {
+        
+        boolean updatedUndo= false;
         for (var entity : entities.values()) {
             if(canMove(entity)) {
-                undo.push();
+                if(!updatedUndo) {
+                    undo.push();
+                    updatedUndo = true;
+                }
                 updateLocation(entity, false);
-
             }
             if(killCollision.collidesWith(entity) != null){
                 killed.add(entity);
