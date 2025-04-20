@@ -1,5 +1,6 @@
 package game;
 
+import edu.usu.audio.SoundManager;
 import edu.usu.graphics.Color;
 import edu.usu.graphics.Font;
 import edu.usu.graphics.Graphics2D;
@@ -35,8 +36,8 @@ public class MainMenuView extends GameStateView {
     private Font fontSelected;
 
     @Override
-    public void initialize(Graphics2D graphics, LevelReader gameLevels, InputConfig inputConfig) {
-        super.initialize(graphics, gameLevels, inputConfig);
+    public void initialize(Graphics2D graphics, LevelReader gameLevels, InputConfig inputConfig, SoundManager audio) {
+        super.initialize(graphics, gameLevels, inputConfig, audio);
 
         fontMenu = new Font("resources/fonts/Gaegu-Regular.ttf", 48, false);
         fontSelected = new Font("resources/fonts/Gaegu-Bold.ttf", 48, false);

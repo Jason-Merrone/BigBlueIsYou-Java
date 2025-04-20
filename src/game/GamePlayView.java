@@ -1,6 +1,7 @@
 package game;
 
 import ecs.Entities.Entity;
+import edu.usu.audio.SoundManager;
 import edu.usu.graphics.Graphics2D;
 
 import java.util.ArrayList;
@@ -14,9 +15,11 @@ public class GamePlayView extends GameStateView {
     private GameStateEnum nextGameState = GameStateEnum.GamePlay;
     private GameModel gameModel;
 
+    SoundManager audio;
+
     @Override
-    public void initialize(Graphics2D graphics, LevelReader gameLevels, InputConfig inputConfig) {
-        super.initialize(graphics, gameLevels, inputConfig);
+    public void initialize(Graphics2D graphics, LevelReader gameLevels, InputConfig inputConfig, SoundManager audio) {
+        super.initialize(graphics, gameLevels, inputConfig, audio);
 
         inputKeyboard = new KeyboardInput(graphics.getWindow());
         // When ESC is pressed, set the appropriate new game state
@@ -28,7 +31,7 @@ public class GamePlayView extends GameStateView {
     @Override
     public void initializeSession() {
         gameModel = new GameModel();
-        gameModel.initialize(graphics, gameLevels);
+        gameModel.initialize(graphics, gameLevels, audio);
         nextGameState = GameStateEnum.GamePlay;
     }
 

@@ -49,8 +49,9 @@ public class Game {
 
         // Give all game states a chance to initialize, other than the constructor
         for (var state : states.values()) {
-            state.initialize(graphics, gameLevels, inputConfig);
+            state.initialize(graphics, gameLevels, inputConfig, audio);
         }
+
 
         currentState = states.get(GameStateEnum.MainMenu);
         currentState.initializeSession();
@@ -64,7 +65,7 @@ public class Game {
         double previousTime = glfwGetTime();
 
         bgm.setGain(0.2f);
-        //bgm.play();
+        bgm.play();
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.

@@ -43,8 +43,9 @@ public class GameModel {
     private Sound winConditionSFX;
 
 
-    public void initialize(Graphics2D graphics, LevelReader gameLevels) {
+    public void initialize(Graphics2D graphics, LevelReader gameLevels, SoundManager soundManager) {
         this.graphics = graphics;
+        this.audio = soundManager;
 
         sysRenderer  = new Renderer(graphics, gameLevels.getCurrentDescriptor().getWidth(), gameLevels.getCurrentDescriptor().getHeight());
         sysPushableCollision = new PushableCollision();
@@ -72,7 +73,6 @@ public class GameModel {
 
         fontBold = new Font("resources/fonts/Gaegu-Bold.ttf",    48, true);
 
-        audio = new SoundManager();
         //winConditionSFX = audio.load("winConditionSFX", "resources/audio/WinCondition.ogg", false);
         //winConditionSFX.play();
     }
