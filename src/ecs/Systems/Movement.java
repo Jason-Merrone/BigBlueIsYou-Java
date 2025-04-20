@@ -5,6 +5,8 @@ import ecs.Components.objectattributes.Kill;
 import ecs.Components.objectattributes.Sink;
 import ecs.Entities.Entity;
 import ecs.Systems.collisionsystems.*;
+import edu.usu.audio.Sound;
+import edu.usu.audio.SoundManager;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,10 @@ public class Movement extends System{
     public ArrayList<Entity> killed = new ArrayList<>();
     public ArrayList<Entity> sunk = new ArrayList<>();
 
+    private SoundManager audio;
+    private Sound moveSFX;
+    private Sound winSFX;
+
     public Movement(PushableCollision collision, StoppedCollision stoppedCollision, Undo undo, WinCollision winCollision, KillCollision killCollision, SinkCollision sinkCollision) {
         super(ecs.Components.objectattributes.You.class);
         this.pushableCollision = collision;
@@ -33,6 +39,11 @@ public class Movement extends System{
         this.winCollision = winCollision;
         this.killCollision = killCollision;
         this.sinkCollision = sinkCollision;
+
+        audio = new SoundManager();
+        moveSFX = audio.load("moveSFX", "resources/audio/Move.ogg", false);
+        winSFX = audio.load("winSFX", "resources/audio/Win.ogg", false);
+        moveSFX.setGain(1.5f);
     }
 
 
@@ -51,12 +62,14 @@ public class Movement extends System{
                     updatedUndo = true;
                 }
                 updateLocation(entity, false);
+                moveSFX.play();
             }
             if(killCollision.collidesWith(entity) != null){
                 killed.add(entity);
             }
             if(winCollision.collidesWith(entity) != null){
                 isWin = true;
+                winSFX.play();
             }
         }
     }

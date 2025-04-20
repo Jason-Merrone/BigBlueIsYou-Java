@@ -1,5 +1,7 @@
 package game;
 
+import edu.usu.audio.Sound;
+import edu.usu.audio.SoundManager;
 import edu.usu.graphics.*;
 
 import java.io.IOException;
@@ -21,6 +23,10 @@ public class Game {
     private InputConfig inputConfig;
     private LevelReader gameLevels;
 
+    // Audio
+    private SoundManager audio;
+    private Sound bgm;
+
     public void initialize() {
         states = new HashMap<>() {
             {
@@ -36,6 +42,9 @@ public class Game {
         inputConfig.load();
         gameLevels = new LevelReader();
         gameLevels.initializeLevels();
+
+        audio = new SoundManager();
+        bgm = audio.load("bgm", "resources/audio/Game.ogg", true);
 
 
         // Give all game states a chance to initialize, other than the constructor
@@ -53,6 +62,9 @@ public class Game {
     public void run() {
         // Grab the first time
         double previousTime = glfwGetTime();
+
+        bgm.setGain(0.3f);
+        //bgm.play();
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.

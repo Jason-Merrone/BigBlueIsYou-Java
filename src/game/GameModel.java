@@ -8,8 +8,10 @@ import ecs.Entities.Object.ObjectType;
 import ecs.Systems.*;
 import ecs.Systems.KeyboardInput;
 import ecs.Systems.collisionsystems.*;
+import edu.usu.graphics.Font;
 import edu.usu.graphics.Graphics2D;
 import org.joml.Vector3i;
+import edu.usu.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,14 @@ public class GameModel {
     private ApplyRules sysApplyRules;
     private Undo          sysUndo;
 
+    private Graphics2D graphics;
+
+    private Font fontBold;
+
 
     public void initialize(Graphics2D graphics, LevelReader gameLevels) {
+        this.graphics = graphics;
+
         sysRenderer  = new Renderer(graphics, gameLevels.getCurrentDescriptor().getWidth(), gameLevels.getCurrentDescriptor().getHeight());
         sysPushableCollision = new PushableCollision();
         sysStoppedCollision = new StoppedCollision();
@@ -56,6 +64,8 @@ public class GameModel {
 
         sysSentence.update(0);
         sysUndo.push();
+
+        fontBold = new Font("resources/fonts/Gaegu-Bold.ttf",    48, true);
     }
 
     public void update(double elapsedTime) {
@@ -103,5 +113,17 @@ public class GameModel {
         sysUndo.remove(id);
         if(!ignoreApplyRules)
             sysApplyRules.remove(id);
+    }
+
+    public void render(double elapsedTime) {
+        if (sysMovement.isWin) {
+            renderWin();
+        }
+    }
+
+    private void renderWin() {
+        float HEIGHT = 0.2f;
+        float width = fontBold.measureTextWidth("You Win", HEIGHT);
+        graphics.drawTextByHeight(fontBold, "You Win", 0.0f - width / 2, -0.1f, HEIGHT, Color.LIGHT_YELLOW);
     }
 }

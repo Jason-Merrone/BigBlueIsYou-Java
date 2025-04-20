@@ -5,6 +5,8 @@ import ecs.Components.Object;
 import ecs.Components.Sprite;
 import ecs.Entities.Entity;
 import ecs.Entities.Noun;
+import edu.usu.audio.Sound;
+import edu.usu.audio.SoundManager;
 import game.GameModel;
 
 import java.util.ArrayList;
@@ -13,10 +15,16 @@ import java.util.List;
 
 public class ApplyRules extends System {
 
+    private SoundManager audio;
+    private Sound winConditionSFX;
+
     GameModel gameModel;
     public ApplyRules(GameModel gameModel){
         super(ecs.Components.Object.class);
         this.gameModel = gameModel;
+
+        audio = new SoundManager();
+        winConditionSFX = audio.load("winConditionSFX", "resources/audio/WinCondition.ogg", false);
     }
     @Override
     public void update(double elapsedTime) {
