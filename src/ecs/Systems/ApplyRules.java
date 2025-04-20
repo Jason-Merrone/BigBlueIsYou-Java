@@ -3,6 +3,7 @@ package ecs.Systems;
 import ecs.Components.Attributes;
 import ecs.Components.Object;
 import ecs.Components.Sprite;
+import ecs.Entities.AttributesEnum;
 import ecs.Entities.Entity;
 import ecs.Entities.Noun;
 import edu.usu.audio.Sound;
@@ -15,17 +16,13 @@ import java.util.List;
 
 public class ApplyRules extends System {
 
-    private SoundManager audio;
-    private Sound winConditionSFX;
-    public Boolean changed;
+    public Boolean winConditionUpdated = false;
 
     GameModel gameModel;
     public ApplyRules(GameModel gameModel){
         super(ecs.Components.Object.class);
         this.gameModel = gameModel;
 
-        audio = new SoundManager();
-        winConditionSFX = audio.load("winConditionSFX", "resources/audio/Game.ogg", false);
     }
     @Override
     public void update(double elapsedTime) {
@@ -38,6 +35,7 @@ public class ApplyRules extends System {
         for(var entity : toModify){
 
             var entityAttribute = entity.get(Attributes.class).attribute;
+            boolean playWinSound = entityAttribute != AttributesEnum.WIN;
 
             if(entityAttribute != null)
                 entity.remove(ecs.Entities.Object.objectAttributes.get(entity.get(Attributes.class).attribute).getClass());
@@ -63,10 +61,8 @@ public class ApplyRules extends System {
                     gameModel.removeEntity(entity.getId(),false);
                     entity.add(Noun.nounToAttribute.get(entry.getValue().get(ecs.Components.Noun.class).type).newInstance());
                     entity.get(Attributes.class).attribute = (Noun.nounToAttributeEnum.get(entry.getValue().get(ecs.Components.Noun.class).type));
-                    if(Noun.nounToAttributeEnum.get(entry.getValue().get(ecs.Components.Noun.class).type) == ecs.Entities.AttributesEnum.WIN) {
-                        // winConditionSFX.play();
-                        java.lang.System.out.println("Loaded SFX? " + (winConditionSFX != null));
-                        java.lang.System.out.println(Noun.nounToAttributeEnum.get(entry.getValue().get(ecs.Components.Noun.class).type));
+                    if(playWinSound && Noun.nounToAttributeEnum.get(entry.getValue().get(ecs.Components.Noun.class).type) == ecs.Entities.AttributesEnum.WIN) {
+                        winConditionUpdated = true;
                     }
                 }
             }
