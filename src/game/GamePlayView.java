@@ -24,6 +24,9 @@ public class GamePlayView extends GameStateView {
         inputKeyboard.registerCommand(GLFW_KEY_ESCAPE, true, (double elapsedTime) -> {
             nextGameState = GameStateEnum.LevelSelect;
         });
+        inputKeyboard.registerCommand(inputConfig.getActionKey(InputConfig.Action.RESET), true, (double elapsedTime) -> {
+            gameModel.initialize(graphics, gameLevels, audio, inputConfig);
+        });
     }
 
     @Override
