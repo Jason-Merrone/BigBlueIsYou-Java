@@ -15,8 +15,6 @@ public class GamePlayView extends GameStateView {
     private GameStateEnum nextGameState = GameStateEnum.GamePlay;
     private GameModel gameModel;
 
-    SoundManager audio;
-
     @Override
     public void initialize(Graphics2D graphics, LevelReader gameLevels, InputConfig inputConfig, SoundManager audio) {
         super.initialize(graphics, gameLevels, inputConfig, audio);

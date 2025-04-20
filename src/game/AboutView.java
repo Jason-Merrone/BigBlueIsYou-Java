@@ -1,5 +1,6 @@
 package game;
 
+import edu.usu.audio.SoundManager;
 import edu.usu.graphics.Color;
 import edu.usu.graphics.Font;
 import edu.usu.graphics.Graphics2D;
@@ -13,8 +14,8 @@ public class AboutView extends GameStateView {
     private Font font;
 
     @Override
-    public void initialize(Graphics2D graphics, LevelReader gameLevels, InputConfig inputConfig) {
-        super.initialize(graphics, gameLevels, inputConfig);
+    public void initialize(Graphics2D graphics, LevelReader gameLevels, InputConfig inputConfig, SoundManager soundManager) {
+        super.initialize(graphics, gameLevels, inputConfig, soundManager);
 
         font = new Font("resources/fonts/Gaegu-Regular.ttf", 48, false);
 

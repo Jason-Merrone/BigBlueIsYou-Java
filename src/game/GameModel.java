@@ -73,7 +73,7 @@ public class GameModel {
 
         fontBold = new Font("resources/fonts/Gaegu-Bold.ttf",    48, true);
 
-        //winConditionSFX = audio.load("winConditionSFX", "resources/audio/WinCondition.ogg", false);
+        winConditionSFX = audio.load("winConditionSFX", "resources/audio/WinCondition.ogg", false);
         //winConditionSFX.play();
     }
 
@@ -91,6 +91,10 @@ public class GameModel {
             removeEntity(entity.getId(), false);
         }
         sysMovement.sunk.clear();
+        if (sysApplyRules.winConditionUpdated) {
+            winConditionSFX.play();
+            sysApplyRules.winConditionUpdated = false;
+        }
     }
 
     public void addEntity(Entity entity) {
