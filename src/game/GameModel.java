@@ -36,6 +36,7 @@ public class GameModel {
     private Undo          sysUndo;
 
     private Graphics2D graphics;
+    private InputConfig inputConfig;
 
     private Font fontBold;
 
@@ -43,9 +44,10 @@ public class GameModel {
     private Sound winConditionSFX;
 
 
-    public void initialize(Graphics2D graphics, LevelReader gameLevels, SoundManager soundManager) {
+    public void initialize(Graphics2D graphics, LevelReader gameLevels, SoundManager soundManager, InputConfig inputConfig) {
         this.graphics = graphics;
         this.audio = soundManager;
+        this.inputConfig = inputConfig;
 
         sysRenderer  = new Renderer(graphics, gameLevels.getCurrentDescriptor().getWidth(), gameLevels.getCurrentDescriptor().getHeight());
         sysPushableCollision = new PushableCollision();
@@ -57,7 +59,7 @@ public class GameModel {
         sysApplyRules = new ApplyRules(this);
         sysSentence = new Sentence(sysWordCollision, sysApplyRules);
         sysMovement  = new Movement(sysPushableCollision, sysStoppedCollision, null, sysWinCollision, sysKillCollision, sysSinkCollision);
-        sysKeyboard  = new KeyboardInput(graphics.getWindow(), sysMovement, null, sysSentence);
+        sysKeyboard  = new KeyboardInput(graphics.getWindow(), sysMovement, null, sysSentence, inputConfig);
         sysUndo      = new Undo(sysRenderer, sysPushableCollision, sysMovement, sysKeyboard, sysStoppedCollision,sysWordCollision,sysSentence, sysApplyRules, sysWinCollision, sysKillCollision, sysSinkCollision);
         sysMovement.setUndo(sysUndo);
         sysKeyboard.setUndo(sysUndo);

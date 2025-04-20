@@ -29,7 +29,7 @@ public class GamePlayView extends GameStateView {
     @Override
     public void initializeSession() {
         gameModel = new GameModel();
-        gameModel.initialize(graphics, gameLevels, audio);
+        gameModel.initialize(graphics, gameLevels, audio, inputConfig);
         nextGameState = GameStateEnum.GamePlay;
     }
 

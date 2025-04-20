@@ -3,21 +3,24 @@ package ecs.Systems;
 
 import static org.lwjgl.glfw.GLFW.*;
 import ecs.Entities.Entity;
+import game.InputConfig;
 
 public class KeyboardInput extends System {
     private final long   window;
     private final Movement movement;
     private       Undo    undo;
     private Sentence sentence;
+    private InputConfig inputConfig;
 
     private boolean wasW, wasA, wasS, wasD, wasZ;
 
-    public KeyboardInput(long window, Movement movement, Undo undo, Sentence sentence) {
+    public KeyboardInput(long window, Movement movement, Undo undo, Sentence sentence, InputConfig inputConfig) {
         super();
         this.window   = window;
         this.movement = movement;
         this.undo     = undo;
         this.sentence = sentence;
+        this.inputConfig = inputConfig;
     }
 
     public void setUndo(Undo undo) {
@@ -26,11 +29,11 @@ public class KeyboardInput extends System {
 
     @Override
     public void update(double dt) {
-        boolean w = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
-        boolean a = glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS;
-        boolean s = glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS;
-        boolean d = glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS;
-        boolean z = glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS;
+        boolean w = glfwGetKey(window, inputConfig.getActionKey(InputConfig.Action.UP)) == GLFW_PRESS;
+        boolean a = glfwGetKey(window, inputConfig.getActionKey(InputConfig.Action.LEFT)) == GLFW_PRESS;
+        boolean s = glfwGetKey(window, inputConfig.getActionKey(InputConfig.Action.DOWN)) == GLFW_PRESS;
+        boolean d = glfwGetKey(window, inputConfig.getActionKey(InputConfig.Action.RIGHT)) == GLFW_PRESS;
+        boolean z = glfwGetKey(window, inputConfig.getActionKey(InputConfig.Action.UNDO)) == GLFW_PRESS;
 
         if (z && !wasZ) {
             undo.pop();
