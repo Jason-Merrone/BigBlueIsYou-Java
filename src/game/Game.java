@@ -63,7 +63,7 @@ public class Game {
         // Grab the first time
         double previousTime = glfwGetTime();
 
-        bgm.setGain(0.3f);
+        bgm.setGain(0.2f);
         //bgm.play();
 
         // Run the rendering loop until the user has attempted to close

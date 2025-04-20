@@ -8,6 +8,8 @@ import ecs.Entities.Object.ObjectType;
 import ecs.Systems.*;
 import ecs.Systems.KeyboardInput;
 import ecs.Systems.collisionsystems.*;
+import edu.usu.audio.Sound;
+import edu.usu.audio.SoundManager;
 import edu.usu.graphics.Font;
 import edu.usu.graphics.Graphics2D;
 import org.joml.Vector3i;
@@ -36,6 +38,9 @@ public class GameModel {
     private Graphics2D graphics;
 
     private Font fontBold;
+
+    private SoundManager audio;
+    private Sound winConditionSFX;
 
 
     public void initialize(Graphics2D graphics, LevelReader gameLevels) {
@@ -66,6 +71,10 @@ public class GameModel {
         sysUndo.push();
 
         fontBold = new Font("resources/fonts/Gaegu-Bold.ttf",    48, true);
+
+        audio = new SoundManager();
+        //winConditionSFX = audio.load("winConditionSFX", "resources/audio/WinCondition.ogg", false);
+        //winConditionSFX.play();
     }
 
     public void update(double elapsedTime) {

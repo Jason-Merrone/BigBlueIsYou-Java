@@ -29,13 +29,14 @@ public class LevelSelectView extends GameStateView {
 
         // grab your level descriptors
         levels = gameLevels.getLevelDescriptors();
+
+        currentSelection = 0;
     }
 
     @Override
     public void initializeSession() {
         // whenever this view is (re)entered, reset state if you like:
         nextGameState    = GameStateEnum.LevelSelect;
-        currentSelection = 0;
         initializeKeys();
     }
 

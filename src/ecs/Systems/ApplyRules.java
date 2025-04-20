@@ -17,6 +17,7 @@ public class ApplyRules extends System {
 
     private SoundManager audio;
     private Sound winConditionSFX;
+    public Boolean changed;
 
     GameModel gameModel;
     public ApplyRules(GameModel gameModel){
@@ -24,7 +25,7 @@ public class ApplyRules extends System {
         this.gameModel = gameModel;
 
         audio = new SoundManager();
-        winConditionSFX = audio.load("winConditionSFX", "resources/audio/WinCondition.ogg", false);
+        winConditionSFX = audio.load("winConditionSFX", "resources/audio/Game.ogg", false);
     }
     @Override
     public void update(double elapsedTime) {
@@ -62,6 +63,11 @@ public class ApplyRules extends System {
                     gameModel.removeEntity(entity.getId(),false);
                     entity.add(Noun.nounToAttribute.get(entry.getValue().get(ecs.Components.Noun.class).type).newInstance());
                     entity.get(Attributes.class).attribute = (Noun.nounToAttributeEnum.get(entry.getValue().get(ecs.Components.Noun.class).type));
+                    if(Noun.nounToAttributeEnum.get(entry.getValue().get(ecs.Components.Noun.class).type) == ecs.Entities.AttributesEnum.WIN) {
+                        // winConditionSFX.play();
+                        java.lang.System.out.println("Loaded SFX? " + (winConditionSFX != null));
+                        java.lang.System.out.println(Noun.nounToAttributeEnum.get(entry.getValue().get(ecs.Components.Noun.class).type));
+                    }
                 }
             }
             gameModel.removeEntity(entity.getId(), true);
